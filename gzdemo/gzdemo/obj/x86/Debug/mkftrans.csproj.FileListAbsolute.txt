@@ -8,3 +8,4 @@ D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resourc
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkttrans.exe
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkttrans.pdb
+D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csprojResolveAssemblyReference.cache

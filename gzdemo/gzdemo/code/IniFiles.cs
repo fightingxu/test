@@ -16,6 +16,8 @@ namespace gzdemo
         private static extern bool WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, byte[] retVal, int size, string filePath);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, char[] retVal, int size, string filePath);
         [DllImport("KERNEL32.DLL")]
         public static extern int GetPrivateProfileSection(string lpAppName, byte[] lpReturnedString, int nSize, string lpFileName);
         [DllImport("KERNEL32.DLL")]
@@ -118,7 +120,7 @@ namespace gzdemo
             // 读取提交频率
             this.iCommitCount = ReadInteger("SYSTEM", "CommitCount", 500);
             // 读取提交频率结束
-            this.sFile =  ReadString("SYSTEM", "FILE", "D:\\搜狗高速下载\\gzdemo\\gzdemo\\gzdemo\\bin\\Release\\mkdt03.txt");
+            this.sFile =  ReadString("SYSTEM", "FILE", "D:\\搜狗高速下载\\gzdemo\\gzdemo\\gzdemo\\test.txt");
         }
         //写INI文件
         public void WriteString(string Section, string Ident, string Value)
@@ -133,10 +135,16 @@ namespace gzdemo
         public string ReadString(string Section, string Ident, string Default)
         {
             Byte[] Buffer = new Byte[65535];
+            char[] sCdest = new char[65535];
+            string sDest = "";
+            //GetPrivateProfileString(Section, Ident, Default, sCdest, Buffer.GetUpperBound(0), FileName);
             int bufLen = GetPrivateProfileString(Section, Ident, Default, Buffer, Buffer.GetUpperBound(0), FileName);
             //必须设定0（系统默认的代码页）的编码方式，否则无法支持中文
-            string s = Encoding.GetEncoding(0).GetString(Buffer);
-            s = s.Substring(0, bufLen);
+            //string s = Encoding.GetEncoding(0).GetString(Buffer);
+             string s = Encoding.GetEncoding(0).GetString(Buffer);
+            s = s.Replace("\0","");
+            s = s.Substring(0, s.Length);
+            //s = s.Replace("\n", string.Empty).Replace("\r", string.Empty);
             return s.Trim();
         }
 

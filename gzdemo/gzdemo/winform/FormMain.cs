@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime;
+using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Data.Sql;
@@ -19,9 +22,16 @@ namespace gzdemo
         private SqlDataLayer sqlConn;
         private string strTB;
 
+        //声明读写INI文件的API函数
+        [DllImport("kernel32")]
+        private static extern long CompareFileTime(FILETIME lpFileTime1, FILETIME lpFileTime2);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, byte[] retVal, int size, string filePath);
+
         public FormMain()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;// 注意现在此阶段需要将线程保护标志 标记成false
             strTB = "gztb100";            
         }
 
@@ -152,7 +162,6 @@ namespace gzdemo
             finally
             {
                 loginStatusToolStripStatusLabel.Text = strstatus;
-
             }
             return bOpened;
         }
@@ -492,8 +501,8 @@ namespace gzdemo
             {
 
             } while (this.bgWorker.IsBusy);*/
-            Thread.Sleep(2000);// 线程睡眠2秒
-           // CheckButton("START");// 启动按钮
+            Thread.Sleep(2000);  // 线程睡眠2秒，防止重复的后台线程开启
+            CheckButton("START");// 启动按钮
             try
             {
                 this.bgWorker.RunWorkerAsync();
@@ -504,6 +513,7 @@ namespace gzdemo
                 MessageBox.Show(ex.Message);
                 return;
             }
+            loginStatusToolStripStatusLabel.Text = "运行中...";
             this.tmrSender.Enabled = true;
             return;
 
@@ -527,6 +537,15 @@ namespace gzdemo
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             IniFiles inifile = new IniFiles(Properties.Resources.cfgname);// 获取配置文件
+            string   sFile;
+            //object locker = new object();
+            string dataFile;
+            DateTime DateCurr,DateComp;
+
+            dataFile = inifile.File;// 配置文件名称
+            DateCurr = File.GetLastWriteTime(dataFile);
+            
+            sFile = inifile.File;
             try
             {
                 // 登录SqlServer
@@ -541,29 +560,49 @@ namespace gzdemo
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 sqlConn.CloseConnection();
+                MessageBox.Show(ex.Message);
                 this.bgWorker.CancelAsync();
-                e.Cancel = true;
-                throw new Exception(ex.Message);
                 return;
             }
-            CheckButton("START");// 启动按钮
+            //  CheckButton("START");// 启动按钮
+            //  dataString = File.GetLastWriteTime(inifile.File).ToLongDateString();// 线程不安全
+            //  dataString_tmp = dataString;
             while (true)
             {
+              //  dataString = File.GetLastWriteTime(inifile.File).ToLongDateString(); ;
+
                 if (this.bgWorker.CancellationPending)// 需要自己判断状态并退出
                 {
                     e.Cancel = true;
                     return;
                 }
+                DateComp = File.GetLastWriteTime(dataFile);
+                if (DateCurr.CompareTo(DateComp) == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    MessageBox.Show("文件已经更改");
+                    break;
+                }
+                DateCurr = DateComp;
+
+               /* if (dataString == dataString_tmp)
+                {
+                    continue;
+                }
+                dataString_tmp = dataString;*/
             }
         }
         private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
            // sqlConn.CloseConnection();---这里不需要释放连接
             string strstatus;
             strstatus = "结束";
+            CheckButton("STOP");
             loginStatusToolStripStatusLabel.Text = strstatus;
             this.tsProgressBar.Value = 0;
             this.tmrSender.Enabled = false;
