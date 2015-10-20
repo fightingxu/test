@@ -9,3 +9,4 @@ D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Release\mkttrans.exe
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Release\mkttrans.pdb
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Release\mkftrans.csprojResolveAssemblyReference.cache
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Release\mkftrans.csproj.GenerateResource.Cache
+D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\bin\Release\log4net.dll

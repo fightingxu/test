@@ -137,7 +137,6 @@ namespace gzdemo
             Byte[] Buffer = new Byte[65535];
             char[] sCdest = new char[65535];
             string sDest = "";
-            //GetPrivateProfileString(Section, Ident, Default, sCdest, Buffer.GetUpperBound(0), FileName);
             int bufLen = GetPrivateProfileString(Section, Ident, Default, Buffer, Buffer.GetUpperBound(0), FileName);
             //必须设定0（系统默认的代码页）的编码方式，否则无法支持中文
             //string s = Encoding.GetEncoding(0).GetString(Buffer);

@@ -8,4 +8,16 @@ D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resourc
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkttrans.exe
 D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkttrans.pdb
-D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csprojResolveAssemblyReference.cache
+D:\搜狗高速下载\gzdemo\gzdemo\gzdemo\bin\Debug\log4net.dll
+D:\gfcode\gzdemo\gzdemo\gzdemo\bin\Debug\mkttrans.exe.config
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkttrans.exe
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkttrans.pdb
+D:\gfcode\gzdemo\gzdemo\gzdemo\bin\Debug\mkttrans.exe
+D:\gfcode\gzdemo\gzdemo\gzdemo\bin\Debug\mkttrans.pdb
+D:\gfcode\gzdemo\gzdemo\gzdemo\bin\Debug\log4net.dll
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csprojResolveAssemblyReference.cache
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.Properties.Resources.resources
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormCfg.resources
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormLogin.resources
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resources
+D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache

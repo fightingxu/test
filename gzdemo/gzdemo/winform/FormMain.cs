@@ -12,22 +12,24 @@ using System.Threading;
 using System.Diagnostics;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using log4net;// 使用第三方封装的日志类记录日志
+using gzdemo.code;
 using System.Windows.Forms;
 
 namespace gzdemo
 {
     public partial class FormMain : Form
     {
+
         private OraDb oraData;
         private SqlDataLayer sqlConn;
         private string strTB;
 
         //声明读写INI文件的API函数
         [DllImport("kernel32")]
-        private static extern long CompareFileTime(FILETIME lpFileTime1, FILETIME lpFileTime2);
-        [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, byte[] retVal, int size, string filePath);
-
+        
+        private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public FormMain()
         {
             InitializeComponent();
@@ -497,12 +499,8 @@ namespace gzdemo
         }
         private void StarttoolStripButton_Click(object sender, EventArgs e)
         {
-            /*do
-            {
-
-            } while (this.bgWorker.IsBusy);*/
             Thread.Sleep(2000);  // 线程睡眠2秒，防止重复的后台线程开启
-            CheckButton("START");// 启动按钮
+            CheckButton("START");
             try
             {
                 this.bgWorker.RunWorkerAsync();
@@ -533,10 +531,32 @@ namespace gzdemo
                 this.bgWorker.CancelAsync();
             }
         }
+        private bool MktToSql(IniFiles inifile)
+        {
+            var file = File.Open(inifile.File, FileMode.Open);
+            List<string> txt = new List<string>();
+            using (var stream = new StreamReader(file))
+            {
+                while (!stream.EndOfStream)
+                {
+                    string stmp = stream.ReadLine();
+                    if (stmp.Contains("HEADER|") || stmp.Contains("TRAILER"))// 文件头和尾不需要插入链表
+                    {
+                        continue;
+                    }
+                    txt.Add(stmp);
+                }
+                stream.Close();// 关闭文件流
+            }
+            file.Close();// 关闭文件
+
+            return true;
+        }
 
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             IniFiles inifile = new IniFiles(Properties.Resources.cfgname);// 获取配置文件
+            GfLogManager.WriteLog("test", 1);
             string   sFile;
             //object locker = new object();
             string dataFile;
@@ -571,8 +591,6 @@ namespace gzdemo
             //  dataString_tmp = dataString;
             while (true)
             {
-              //  dataString = File.GetLastWriteTime(inifile.File).ToLongDateString(); ;
-
                 if (this.bgWorker.CancellationPending)// 需要自己判断状态并退出
                 {
                     e.Cancel = true;
@@ -588,6 +606,8 @@ namespace gzdemo
                     MessageBox.Show("文件已经更改");
                     break;
                 }
+
+
                 DateCurr = DateComp;
 
                /* if (dataString == dataString_tmp)

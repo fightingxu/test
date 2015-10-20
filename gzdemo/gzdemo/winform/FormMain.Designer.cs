@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.loginStatusToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,7 +82,10 @@
             this.textBoxTb = new System.Windows.Forms.TextBox();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tmrSender = new System.Windows.Forms.Timer(this.components);
-            this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.lvwMessage = new System.Windows.Forms.ListView();
+            this.colDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colLog = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -95,9 +99,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loginStatusToolStripStatusLabel,
             this.tsProgressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 474);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 586);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(862, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1054, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -107,6 +111,11 @@
             this.loginStatusToolStripStatusLabel.Size = new System.Drawing.Size(44, 17);
             this.loginStatusToolStripStatusLabel.Text = "未登录";
             // 
+            // tsProgressBar
+            // 
+            this.tsProgressBar.Name = "tsProgressBar";
+            this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -114,7 +123,7 @@
             this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(862, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1054, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -250,7 +259,7 @@
             this.ExittoolStripButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 25);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(862, 25);
+            this.toolStrip.Size = new System.Drawing.Size(1054, 25);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "插入数据";
             // 
@@ -435,8 +444,9 @@
             this.dataGridView1.Location = new System.Drawing.Point(197, 53);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(563, 317);
+            this.dataGridView1.Size = new System.Drawing.Size(68, 43);
             this.dataGridView1.TabIndex = 3;
+            this.dataGridView1.Visible = false;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // groupBox1
@@ -535,16 +545,45 @@
             // 
             this.tmrSender.Tick += new System.EventHandler(this.tmrSender_Tick);
             // 
-            // tsProgressBar
+            // lvwMessage
             // 
-            this.tsProgressBar.Name = "tsProgressBar";
-            this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.lvwMessage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colDate,
+            this.colType,
+            this.colLog});
+            this.lvwMessage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwMessage.ForeColor = System.Drawing.SystemColors.ActiveBorder;
+            this.lvwMessage.FullRowSelect = true;
+            this.lvwMessage.GridLines = true;
+            this.lvwMessage.Location = new System.Drawing.Point(0, 50);
+            this.lvwMessage.Name = "lvwMessage";
+            this.lvwMessage.Size = new System.Drawing.Size(1054, 536);
+            this.lvwMessage.TabIndex = 6;
+            this.lvwMessage.UseCompatibleStateImageBehavior = false;
+            this.lvwMessage.View = System.Windows.Forms.View.Details;
+            // 
+            // colDate
+            // 
+            this.colDate.Text = "日期时间";
+            this.colDate.Width = 120;
+            // 
+            // colType
+            // 
+            this.colType.Text = "类型";
+            this.colType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.colType.Width = 55;
+            // 
+            // colLog
+            // 
+            this.colLog.Text = "日志";
+            this.colLog.Width = 350;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 496);
+            this.ClientSize = new System.Drawing.Size(1054, 608);
+            this.Controls.Add(this.lvwMessage);
             this.Controls.Add(this.groupBoxTB);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
@@ -625,6 +664,10 @@
         private System.ComponentModel.BackgroundWorker bgWorker;
         private System.Windows.Forms.Timer tmrSender;
         private System.Windows.Forms.ToolStripProgressBar tsProgressBar;
+        private System.Windows.Forms.ListView lvwMessage;
+        private System.Windows.Forms.ColumnHeader colDate;
+        private System.Windows.Forms.ColumnHeader colType;
+        private System.Windows.Forms.ColumnHeader colLog;
     }
 }
 
