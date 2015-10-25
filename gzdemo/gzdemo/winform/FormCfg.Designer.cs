@@ -59,7 +59,7 @@
             // 
             this.textDbConn.Location = new System.Drawing.Point(196, 50);
             this.textDbConn.Name = "textDbConn";
-            this.textDbConn.Size = new System.Drawing.Size(122, 21);
+            this.textDbConn.Size = new System.Drawing.Size(365, 21);
             this.textDbConn.TabIndex = 2;
             // 
             // label2
@@ -113,7 +113,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(84, 226);
+            this.label5.Location = new System.Drawing.Point(84, 217);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(83, 12);
             this.label5.TabIndex = 9;
@@ -121,9 +121,9 @@
             // 
             // textFile
             // 
-            this.textFile.Location = new System.Drawing.Point(196, 217);
+            this.textFile.Location = new System.Drawing.Point(196, 214);
             this.textFile.Name = "textFile";
-            this.textFile.Size = new System.Drawing.Size(122, 21);
+            this.textFile.Size = new System.Drawing.Size(365, 21);
             this.textFile.TabIndex = 10;
             this.textFile.TextChanged += new System.EventHandler(this.textFile_TextChanged);
             // 
@@ -169,7 +169,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(84, 257);
+            this.label6.Location = new System.Drawing.Point(84, 248);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(59, 12);
             this.label6.TabIndex = 15;
@@ -179,7 +179,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(616, 345);
+            this.ClientSize = new System.Drawing.Size(672, 344);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txt_Path);
             this.Controls.Add(this.button1);

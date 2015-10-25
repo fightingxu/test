@@ -1,0 +1,4 @@
+ ----------------------Start-------------------------- 2015-10-21 15:03:34,365 [5] ERROR gzdemo.code.GfLogManager - test
+2015-10-21 15:03:40,947 [6] ERROR gzdemo.code.GfLogManager - test
+2015-10-21 15:03:47,400 [5] ERROR gzdemo.code.GfLogManager - test
+ -----------------------End---------------------------  ----------------------Start-------------------------- 2015-10-21 15:55:23,460 [11] ERROR gzdemo.code.GfLogManager - test

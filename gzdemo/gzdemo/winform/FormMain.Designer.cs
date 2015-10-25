@@ -561,6 +561,7 @@
             this.lvwMessage.TabIndex = 6;
             this.lvwMessage.UseCompatibleStateImageBehavior = false;
             this.lvwMessage.View = System.Windows.Forms.View.Details;
+            this.lvwMessage.SelectedIndexChanged += new System.EventHandler(this.lvwMessage_SelectedIndexChanged);
             // 
             // colDate
             // 

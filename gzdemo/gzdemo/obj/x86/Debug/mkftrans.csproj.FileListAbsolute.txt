@@ -21,3 +21,15 @@ D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormCfg.resources
 D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormLogin.resources
 D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resources
 D:\gfcode\gzdemo\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache
+D:\test_gf\gzdemo\gzdemo\bin\Debug\mkttrans.exe.config
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\mkttrans.exe
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\mkttrans.pdb
+D:\test_gf\gzdemo\gzdemo\bin\Debug\mkttrans.exe
+D:\test_gf\gzdemo\gzdemo\bin\Debug\mkttrans.pdb
+D:\test_gf\gzdemo\gzdemo\bin\Debug\log4net.dll
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csprojResolveAssemblyReference.cache
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.Properties.Resources.resources
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormCfg.resources
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormLogin.resources
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resources
+D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache

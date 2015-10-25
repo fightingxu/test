@@ -24,6 +24,12 @@ namespace gzdemo
         private OraDb oraData;
         private SqlDataLayer sqlConn;
         private string strTB;
+        private int icount = 0;// 计数器计数要插入的数据
+        const char SOH = (char)0x01;
+        const string zero4dec = "0.0000";
+        const string zero2dec = "0.00";
+        const string zero1dec = "0.0";
+        const string zero = "0";
 
         //声明读写INI文件的API函数
         [DllImport("kernel32")]
@@ -33,7 +39,7 @@ namespace gzdemo
         public FormMain()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false;// 注意现在此阶段需要将线程保护标志 标记成false
+            CheckForIllegalCrossThreadCalls = false;// 注意现在此阶段需要将线程保护标志 标记成false---重要参数
             strTB = "gztb100";            
         }
 
@@ -158,8 +164,7 @@ namespace gzdemo
             catch (System.Exception ex)
             {
                 strstatus = ex.Message;
-                MessageBox.Show(ex.Message);
-                //throw new Exception(ex.Message);
+                MessageBox.Show(ex.Message, "连接数据库失败", MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
             finally
             {
@@ -508,7 +513,7 @@ namespace gzdemo
             catch (Exception ex)
             {
                 //this.bgWorker.CancelAsync();
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "后台线程启动失败", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
             loginStatusToolStripStatusLabel.Text = "运行中...";
@@ -531,16 +536,31 @@ namespace gzdemo
                 this.bgWorker.CancelAsync();
             }
         }
+        // 核心处理函数
         private bool MktToSql(IniFiles inifile)
         {
             var file = File.Open(inifile.File, FileMode.Open);
             List<string> txt = new List<string>();
+            List<Dictionary<int, string>> map_txt = new List<Dictionary<int, string>>();
+            string mdtext,stime_get,tmpsqldcmd,sqlcmd,sqlcmd_foreach,sqlcmd_last ;
+            string[] sheader;
+            SqlTransaction sqlTrans = (SqlTransaction)null;
+            int i = 0;
+            stime_get = "";
+            sqlcmd_foreach = "";
+            sqlcmd_last = "";
             using (var stream = new StreamReader(file))
             {
                 while (!stream.EndOfStream)
                 {
                     string stmp = stream.ReadLine();
-                    if (stmp.Contains("HEADER|") || stmp.Contains("TRAILER"))// 文件头和尾不需要插入链表
+                    if (stmp.Contains("HEADER")  )// 文件头和尾不需要插入链表
+                    {
+                        sheader = stmp.Split('|');
+                        stime_get = sheader[6];// 分割后的第7个字符串为时间戳
+                        continue;
+                    }
+                    if(stmp.Contains("TRAILER"))
                     {
                         continue;
                     }
@@ -549,6 +569,93 @@ namespace gzdemo
                 stream.Close();// 关闭文件流
             }
             file.Close();// 关闭文件
+            tmpsqldcmd = "insert into " + inifile.Table + " (pubnum,bcasttype,setid,seqnum,recordtimestamp,mdtext) " + "(" ;
+            sqlcmd = tmpsqldcmd;
+            foreach (string sstmp in txt)
+            {
+                string[] sArray = sstmp.Split('|');
+  
+                icount++;// 计数器加1
+                i++;
+                mdtext = "35=W" + SOH + "963= " + SOH + "1187=0" + SOH + "48=" + sArray[1].Trim() + SOH
+                    + "8506=" + sArray[2].Trim() + SOH + "8538=" + sArray[33] + SOH + "8504=" + ((sArray[4].Trim() == "")?zero2dec:sArray[4].Trim())
+                          + SOH + "387=" + sArray[3].Trim() + SOH + "268=16" + SOH + "269=4" + SOH + "270=" + ((sArray[6].Trim() == "") ? zero4dec : sArray[6].Trim())
+                          + SOH + "269=6" + SOH + "270=" + ((sArray[32].Trim() == "") ? zero4dec : sArray[32].Trim()) + SOH +
+                          "269=7" + SOH + "270=" + ((sArray[9].Trim() == "") ? zero4dec : sArray[9].Trim()) + SOH + "269=8" + SOH + "270=" + ((sArray[10].Trim() == "") ? zero4dec : sArray[10].Trim())
+                          + SOH + "269=x" + SOH + "270=" + ((sArray[7].Trim() == "") ? zero4dec : sArray[7].Trim()) + SOH + "269=2" + SOH + "270=" + ((sArray[11].Trim() == "") ? zero4dec : sArray[11].Trim()) + SOH + "269=0" + SOH + "270=" + ((sArray[12].Trim() == "") ? "0.0000" : sArray[12].Trim())
+                          + SOH + "271=" + sArray[13].Trim() + SOH + "290=1" + SOH + "269=0" + SOH + "270=" + ((sArray[16].Trim() == "") ? "0.0000" : sArray[16].Trim())
+                          + SOH + "271=" + sArray[17].Trim() + SOH + "290=2" + SOH + "269=0" + SOH + "270=" + ((sArray[20].Trim() == "") ? "0.0000" : sArray[20].Trim())
+                          + SOH + "271=" + sArray[21].Trim() + SOH + "290=3" + SOH + "269=0" + SOH + "270=" + ((sArray[24].Trim() == "") ? "0.0000" : sArray[24].Trim())
+                          + SOH + "271=" + sArray[25].Trim() + SOH + "290=4" + SOH + "269=0" + SOH + "270=" + ((sArray[28].Trim() == "") ? "0.0000" : sArray[28].Trim())
+                          + SOH + "271=" + sArray[29].Trim() + SOH + "290=5" + SOH + "269=1" + SOH + "270=" + ((sArray[14].Trim() == "") ? "0.0000" : sArray[14].Trim())
+                          + SOH + "271=" + sArray[15].Trim() + SOH + "290=1" + SOH + "269=1" + SOH + "270=" + ((sArray[18].Trim() == "") ? "0.0000" : sArray[18].Trim())
+                          + SOH + "271=" + sArray[19].Trim() + SOH + "290=2" + SOH + "269=1" + SOH + "270=" + ((sArray[22].Trim() == "") ? "0.0000" : sArray[22].Trim())
+                          + SOH + "271=" + sArray[23].Trim() + SOH + "290=3" + SOH + "269=1" + SOH + "270=" + ((sArray[26].Trim() == "") ? "0.0000" : sArray[26].Trim())
+                          + SOH + "271=" + sArray[27].Trim() + SOH + "290=4" + SOH + "269=1" + SOH + "270=" + ((sArray[30].Trim() == "") ? "0.0000" : sArray[30].Trim())
+                          + SOH + "271=" + sArray[31].Trim() + SOH + "290=5" + SOH;
+                mdtext = "9=" + (mdtext.Length) + SOH + mdtext;// 一条数据的信息成功获得
+                sqlcmd_foreach = "SELECT " + icount + "," + "'" + "7H" + "'" + "," + "'" + "300" + "'" + "," + icount + "," + "'" + stime_get + "'" + "," + "'" + mdtext + "'";
+                
+                if (i == inifile.CommitCount)// 暂时设置成50
+                {
+                    sqlcmd += (sqlcmd_foreach + ")");
+
+                    try
+                    {
+                        // Todo执行插入操作
+                        sqlTrans = sqlConn.GetTrans();
+                        sqlConn.command.Transaction = sqlTrans;
+                        if (sqlConn.RunNonQuery(sqlcmd) != 0)
+                        {
+                            sqlTrans.Commit();
+                        }
+                        else
+                        {
+                            sqlTrans.Rollback();
+                        }
+                    }
+                    catch (Exception sqlex)
+                    {
+                        if (sqlTrans != null)
+                        {
+                            sqlTrans.Rollback();
+                        } 
+                    }
+                    sqlcmd = tmpsqldcmd;
+                    i = 0;
+                }
+                else
+                {
+                    sqlcmd_last = sqlcmd;
+                    sqlcmd += (sqlcmd_foreach + " UNION ALL ");
+                }
+            }
+            if (i != 0) // 如果 i不等于0说明还有余下的数据需要插入到数据库 
+            {
+                sqlcmd_last += (sqlcmd_foreach + ")");
+                try
+                {
+                    // Todo执行插入操作
+                    sqlTrans = sqlConn.GetTrans();
+                    sqlConn.command.Transaction = sqlTrans;
+                    if (sqlConn.RunNonQuery(sqlcmd_last) != 0)
+                    {
+                        sqlTrans.Commit();
+                    }
+                    else
+                    {
+                        sqlTrans.Rollback();
+                    }
+                }
+                catch (Exception sexlast)
+                {
+                    if (sqlTrans != null)
+                    {
+                        sqlTrans.Rollback();
+                    }
+                }
+
+            }
 
             return true;
         }
@@ -556,9 +663,9 @@ namespace gzdemo
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             IniFiles inifile = new IniFiles(Properties.Resources.cfgname);// 获取配置文件
+            bool bQuickStart = false;
             GfLogManager.WriteLog("test", 1);
             string   sFile;
-            //object locker = new object();
             string dataFile;
             DateTime DateCurr,DateComp;
 
@@ -573,22 +680,25 @@ namespace gzdemo
                 {
                     sqlConn.CloseConnection();
                     MessageBox.Show("连接数据库失败");
-                    // this.bgWorker.CancelAsync();
+                    this.bgWorker.CancelAsync();
                     e.Cancel = true;
                     return;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "连接数据库失败", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 sqlConn.CloseConnection();
-                MessageBox.Show(ex.Message);
                 this.bgWorker.CancelAsync();
                 return;
             }
-            //  CheckButton("START");// 启动按钮
-            //  dataString = File.GetLastWriteTime(inifile.File).ToLongDateString();// 线程不安全
-            //  dataString_tmp = dataString;
+            //  CheckButton("START");// 启动按钮线程不安全
+            if (this.MktToSql(inifile) == false)//启动的时候先转文件
+            {
+                MessageBox.Show("启动转换文件失败");
+                return;
+            }
+
             while (true)
             {
                 if (this.bgWorker.CancellationPending)// 需要自己判断状态并退出
@@ -604,11 +714,14 @@ namespace gzdemo
                 else
                 {
                     MessageBox.Show("文件已经更改");
-                    break;
+                    //break;
                 }
 
 
                 DateCurr = DateComp;
+                this.MktToSql(inifile);// 当文件时间戳更改的时候，再转文件
+
+
 
                /* if (dataString == dataString_tmp)
                 {
@@ -640,6 +753,11 @@ namespace gzdemo
             {
                 this.tsProgressBar.Value++;
             }
+        }
+
+        private void lvwMessage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
     }

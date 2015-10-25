@@ -71,7 +71,6 @@ namespace gzdemo
             {
                 Connection.Open();
             }
-          
             command.CommandText = sqlQuery;
             //   result = command.ExecuteReader(CommandBehavior.CloseConnection); // ww 061102
             result = command.ExecuteReader();
@@ -167,6 +166,10 @@ namespace gzdemo
             oraDA.SelectCommand = command;
             oraDA.FillSchema(dataSet, SchemaType.Mapped, tableName);
             // Connection.Close();     
+        }
+        public SqlTransaction GetTrans()
+        {
+            return Connection.BeginTransaction();
         }
 
         public int Fill( DataTable dt, string sqlQuery)
