@@ -33,3 +33,15 @@ D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormCfg.resources
 D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormLogin.resources
 D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resources
 D:\test_gf\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache
+D:\gftosqlserver\gzdemo\gzdemo\bin\Debug\mkttrans.exe.config
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\mkttrans.exe
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\mkttrans.pdb
+D:\gftosqlserver\gzdemo\gzdemo\bin\Debug\mkttrans.exe
+D:\gftosqlserver\gzdemo\gzdemo\bin\Debug\mkttrans.pdb
+D:\gftosqlserver\gzdemo\gzdemo\bin\Debug\log4net.dll
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csprojResolveAssemblyReference.cache
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\gzdemo.Properties.Resources.resources
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormCfg.resources
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormLogin.resources
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\gzdemo.FormMain.resources
+D:\gftosqlserver\gzdemo\gzdemo\obj\x86\Debug\mkftrans.csproj.GenerateResource.Cache

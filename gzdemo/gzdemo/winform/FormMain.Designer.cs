@@ -144,12 +144,14 @@
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.newToolStripMenuItem.Text = "新建";
+            this.newToolStripMenuItem.Visible = false;
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.openToolStripMenuItem.Text = "打开";
+            this.openToolStripMenuItem.Visible = false;
             // 
             // saveToolStripMenuItem
             // 
@@ -157,6 +159,7 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.saveToolStripMenuItem.Text = "保存";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.Visible = false;
             // 
             // exitToolStripMenuItem
             // 
@@ -164,6 +167,7 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.exitToolStripMenuItem.Text = "退出";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Visible = false;// 不可见
             // 
             // 配置ToolStripMenuItem
             // 
@@ -185,6 +189,8 @@
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.testToolStripMenuItem.Text = "测试";
+            this.testToolStripMenuItem.Visible = false; //不可见
+
             // 
             // loginToolStripMenuItem
             // 
@@ -272,6 +278,7 @@
             this.loginToolStripButton.Size = new System.Drawing.Size(52, 22);
             this.loginToolStripButton.Text = "连接";
             this.loginToolStripButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.loginToolStripButton.Visible = false;
             this.loginToolStripButton.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
@@ -286,6 +293,7 @@
             this.disconnectToolStripButton.Name = "disconnectToolStripButton";
             this.disconnectToolStripButton.Size = new System.Drawing.Size(76, 22);
             this.disconnectToolStripButton.Text = "断开连接";
+            this.disconnectToolStripButton.Visible = false;
             this.disconnectToolStripButton.Click += new System.EventHandler(this.disconnectToolStripButton_Click);
             // 
             // toolStripSeparator2
@@ -301,6 +309,7 @@
             this.createTbToolStripButton.Name = "createTbToolStripButton";
             this.createTbToolStripButton.Size = new System.Drawing.Size(64, 22);
             this.createTbToolStripButton.Text = "创建表";
+            this.createTbToolStripButton.Visible = false;
             this.createTbToolStripButton.Click += new System.EventHandler(this.createTbToolStripButton_Click);
             // 
             // toolStripSeparator3
@@ -315,6 +324,7 @@
             this.insertToolStripButton.Name = "insertToolStripButton";
             this.insertToolStripButton.Size = new System.Drawing.Size(76, 22);
             this.insertToolStripButton.Text = "插入数据";
+            this.insertToolStripButton.Visible = false;
             this.insertToolStripButton.Click += new System.EventHandler(this.insertToolStripButton_Click);
             // 
             // toolStripSeparator4
@@ -329,6 +339,7 @@
             this.addToolStripButton.Name = "addToolStripButton";
             this.addToolStripButton.Size = new System.Drawing.Size(52, 22);
             this.addToolStripButton.Text = "添加";
+            this.addToolStripButton.Visible = false;
             this.addToolStripButton.Click += new System.EventHandler(this.addToolStripButton_Click);
             // 
             // toolStripSeparator5
@@ -343,6 +354,7 @@
             this.queryToolStripButton.Name = "queryToolStripButton";
             this.queryToolStripButton.Size = new System.Drawing.Size(52, 22);
             this.queryToolStripButton.Text = "查询";
+            this.queryToolStripButton.Visible = false;
             this.queryToolStripButton.Click += new System.EventHandler(this.queryToolStripButton_Click);
             // 
             // toolStripSeparator6
@@ -361,6 +373,7 @@
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(61, 22);
             this.toolStripDropDownButton1.Text = "删除";
+            this.toolStripDropDownButton1.Visible = false;
             // 
             // delCurSelToolStripMenuItem
             // 
@@ -395,6 +408,7 @@
             this.updateToolStripButton.Name = "updateToolStripButton";
             this.updateToolStripButton.Size = new System.Drawing.Size(52, 22);
             this.updateToolStripButton.Text = "更新";
+            this.updateToolStripButton.Visible = false;
             this.updateToolStripButton.Click += new System.EventHandler(this.updateToolStripButton_Click);
             // 
             // StarttoolStripButton
@@ -416,6 +430,7 @@
             this.PausetoolStripButton.Name = "PausetoolStripButton";
             this.PausetoolStripButton.Size = new System.Drawing.Size(36, 22);
             this.PausetoolStripButton.Text = "暂停";
+            this.PausetoolStripButton.Visible = false;
             this.PausetoolStripButton.Click += new System.EventHandler(this.PausetoolStripButton_Click);
             // 
             // StoptoolStripButton
@@ -437,6 +452,7 @@
             this.ExittoolStripButton.Name = "ExittoolStripButton";
             this.ExittoolStripButton.Size = new System.Drawing.Size(36, 22);
             this.ExittoolStripButton.Text = "退出";
+            this.ExittoolStripButton.Click += new System.EventHandler(this.ExittoolStripButton_Click);
             // 
             // dataGridView1
             // 

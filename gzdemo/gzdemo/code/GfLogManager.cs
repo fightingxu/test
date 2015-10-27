@@ -8,7 +8,7 @@ namespace gzdemo.code
 {
     class GfLogManager
     {
-        private static FormMain LogRecoder = null;
+        public static FormMain LogRecoder = null;
 
 
         private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -19,7 +19,7 @@ namespace gzdemo.code
         /// <param name="type">0:信息 1:错误</param>
         public static void WriteLog(String msg, int type)
         {
-            //AddFrontLog(msg, type);
+            AddFrontLog(msg, type);
             switch (type)
             {
                 case 0:
@@ -33,8 +33,8 @@ namespace gzdemo.code
 
         public static void AddFrontLog(String log, int type)
         {
-            //if (LogRecoder != null)
-            //    LogRecoder.AddFrontLog(log, type);
+            if (LogRecoder != null)
+                LogRecoder.AddFrontLog(log, type);
         }
     }
 }

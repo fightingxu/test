@@ -36,6 +36,7 @@ namespace gzdemo
         private static extern int GetPrivateProfileString(string section, string key, string def, byte[] retVal, int size, string filePath);
         
         private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private delegate void AddMessage(String value, int type);// 委托函数指针
         public FormMain()
         {
             InitializeComponent();
@@ -48,6 +49,45 @@ namespace gzdemo
         {
             labelID.Enabled = radioButtonQuery.Checked;
             textBoxID.Enabled = radioButtonQuery.Checked;
+        }
+
+        public void AddFrontLog(String log, int type)
+        {
+            AddMessage objAddMessage = new AddMessage(AddFrontLog);
+
+            if (this.lvwMessage.InvokeRequired)
+            {
+                try
+                {
+                    Invoke(objAddMessage, new object[] { log, type });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            else
+            {
+                while (this.lvwMessage.Items.Count > 1000)
+                {
+                    this.lvwMessage.Items.Clear();
+                }
+
+                ListViewItem lvItem = new ListViewItem();
+                lvItem.SubItems[0].Text = DateTime.Now.ToLocalTime().ToString();
+                switch (type)
+                {
+                    case 0:
+                        lvItem.SubItems.Add(new ListViewItem.ListViewSubItem(lvItem, "Infor"));
+                        break;
+                    case 1:
+                        lvItem.SubItems.Add(new ListViewItem.ListViewSubItem(lvItem, "Error"));
+                        lvItem.ForeColor = Color.Red;
+                        break;
+                }
+                lvItem.SubItems.Add(new ListViewItem.ListViewSubItem(lvItem, log));
+                this.lvwMessage.Items.Add(lvItem);
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -180,6 +220,7 @@ namespace gzdemo
 
             textBoxTb.Text = strTB;
             radioButtonQueryAll.Checked = true;
+            GfLogManager.LogRecoder = this;
             UpdateGroupCtrl();
         }
 
@@ -205,7 +246,7 @@ namespace gzdemo
             {
                 
             }
-            loginStatusToolStripStatusLabel.Text = strstatus;        
+            loginStatusToolStripStatusLabel.Text = strstatus; 
         }
 
         private void insertToolStripButton_Click(object sender, EventArgs e)
@@ -596,7 +637,7 @@ namespace gzdemo
                 mdtext = "9=" + (mdtext.Length) + SOH + mdtext;// 一条数据的信息成功获得
                 sqlcmd_foreach = "SELECT " + icount + "," + "'" + "7H" + "'" + "," + "'" + "300" + "'" + "," + icount + "," + "'" + stime_get + "'" + "," + "'" + mdtext + "'";
                 
-                if (i == inifile.CommitCount)// 暂时设置成50
+                if (i == inifile.CommitCount)
                 {
                     sqlcmd += (sqlcmd_foreach + ")");
 
@@ -611,11 +652,13 @@ namespace gzdemo
                         }
                         else
                         {
+                            GfLogManager.WriteLog(sqlcmd, 1);
                             sqlTrans.Rollback();
                         }
                     }
                     catch (Exception sqlex)
                     {
+                        GfLogManager.WriteLog(sqlcmd+sqlex.Message, 1);
                         if (sqlTrans != null)
                         {
                             sqlTrans.Rollback();
@@ -649,6 +692,7 @@ namespace gzdemo
                 }
                 catch (Exception sexlast)
                 {
+                    GfLogManager.WriteLog(sqlcmd_last+sexlast.Message, 1);
                     if (sqlTrans != null)
                     {
                         sqlTrans.Rollback();
@@ -660,13 +704,44 @@ namespace gzdemo
             return true;
         }
 
+        private object getmaxpubnum(IniFiles inifile)
+        {
+            object result = null;
+            SqlTransaction sqlTrans = null;
+            string getmaxpubnum;
+            getmaxpubnum = "select isnull(max(pubnum),0) from " +inifile.Table;
+            try
+            {
+                sqlTrans = sqlConn.GetTrans();
+                sqlConn.command.Transaction = sqlTrans;
+                result = sqlConn.RunOneReCordQuery(getmaxpubnum);
+                if (result != null)
+                {
+                    sqlTrans.Commit();
+                }
+                else
+                {
+                    sqlTrans.Rollback();
+                }
+            }
+            catch (Exception exmes)
+            {
+                if (sqlTrans != null)
+                {
+                    sqlTrans.Rollback();
+                }
+            }
+            return result;
+        }
+
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             IniFiles inifile = new IniFiles(Properties.Resources.cfgname);// 获取配置文件
-            bool bQuickStart = false;
-            GfLogManager.WriteLog("test", 1);
+            // GfLogManager.WriteLog("test", 1);
             string   sFile;
             string dataFile;
+            int imax = 0;
+            object iresult = null;
             DateTime DateCurr,DateComp;
 
             dataFile = inifile.File;// 配置文件名称
@@ -687,17 +762,32 @@ namespace gzdemo
             }
             catch (Exception ex)
             {
+                GfLogManager.WriteLog(ex.Message, 1);
                 MessageBox.Show(ex.Message, "连接数据库失败", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 sqlConn.CloseConnection();
                 this.bgWorker.CancelAsync();
                 return;
             }
+
+            // 查询表中最大流水号
+            iresult = this.getmaxpubnum(inifile);
+            if (iresult != null)
+            {
+                imax = (int)iresult;
+            }
+            else
+            {
+                imax = 0;
+            }
+            // 取表中的最大流水号完毕
+            icount = imax;
             //  CheckButton("START");// 启动按钮线程不安全
             if (this.MktToSql(inifile) == false)//启动的时候先转文件
             {
                 MessageBox.Show("启动转换文件失败");
                 return;
             }
+            GfLogManager.WriteLog("初次转换文件到数据库成功", 0);
 
             while (true)
             {
@@ -719,8 +809,12 @@ namespace gzdemo
 
 
                 DateCurr = DateComp;
-                this.MktToSql(inifile);// 当文件时间戳更改的时候，再转文件
-
+                if (this.MktToSql(inifile) == false)// 当文件时间戳更改的时候，再转文件
+                {
+                    GfLogManager.WriteLog("转换文件到数据库失败，详细请见日志", 1);
+                    return;
+                }
+                GfLogManager.WriteLog("转换文件到数据库成功", 0);
 
 
                /* if (dataString == dataString_tmp)
@@ -758,6 +852,17 @@ namespace gzdemo
         private void lvwMessage_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void ExittoolStripButton_Click(object sender, EventArgs e)
+        {
+            if (this.bgWorker.IsBusy)
+            {
+                MessageBox.Show("请先停止发送再退出！");
+                return;
+            }
+
+            this.Close();
         }
 
     }

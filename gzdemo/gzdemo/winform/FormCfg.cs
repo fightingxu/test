@@ -168,5 +168,15 @@ namespace gzdemo
             this.txt_Path.Text = this.folderBrowserFilePath.SelectedPath;
         }
 
+        private void txt_Path_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

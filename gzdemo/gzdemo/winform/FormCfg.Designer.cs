@@ -67,9 +67,10 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(84, 87);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 12);
+            this.label2.Size = new System.Drawing.Size(83, 12);
             this.label2.TabIndex = 3;
-            this.label2.Text = "睡眠时间:";
+            this.label2.Text = "睡眠时间(ms):";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // textSleepTime
             // 
@@ -157,6 +158,7 @@
             this.button1.TabIndex = 13;
             this.button1.Text = "...";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // txt_Path
@@ -165,6 +167,8 @@
             this.txt_Path.Name = "txt_Path";
             this.txt_Path.Size = new System.Drawing.Size(284, 21);
             this.txt_Path.TabIndex = 14;
+            this.txt_Path.Visible = false;
+            this.txt_Path.TextChanged += new System.EventHandler(this.txt_Path_TextChanged);
             // 
             // label6
             // 
@@ -174,6 +178,7 @@
             this.label6.Size = new System.Drawing.Size(59, 12);
             this.label6.TabIndex = 15;
             this.label6.Text = "文件路径:";
+            this.label6.Visible = false;
             // 
             // FormCfg
             // 

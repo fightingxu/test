@@ -77,6 +77,19 @@ namespace gzdemo
             //   Connection.Close();
             return result;
         }
+        // 只查询第一行第一列
+        public object RunOneReCordQuery(string sqlQuery)
+        {
+            object result = null;
+            if (Connection.State == ConnectionState.Closed)
+            {
+                Connection.Open();
+            }
+            command.CommandText = sqlQuery;
+            result = command.ExecuteScalar();
+            return result;
+
+        }
 
         public int RunNonQuery( string sqlNonQuery )
         {
