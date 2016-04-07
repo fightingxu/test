@@ -8,7 +8,7 @@ namespace gzdemo.code
 {
     class GfLogManager
     {
-        public static FormMain LogRecoder = null;
+         public static FormMain LogRecoder = null;
 
 
         private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
